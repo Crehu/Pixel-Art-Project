@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'VT323', monospace;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-color: #3cc3ff;
+    }
+    #menu-wrapper {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      z-index: 2;
+    }
+    #sprite-wrapper {
+      position: absolute;
+      z-index: 1;
+    }
+    h1.title {
+      margin: 24px;
+      font-size: 84px;
+      color: #ffffff;
+      text-shadow: 4px 4px #000000;
+    }
+    h2.play-help {
+      font-size: 32px;
+      font-weight: normal;
+      color: #ffffff;
+      text-shadow: 2px 2px #000000;
+      position: absolute;
+      padding: 0;
+      margin: 0;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    ul.menu {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    ul.menu li {
+      font-size: 36px;
+      color: #ffffff;
+      text-shadow: 4px 4px #000000;
+      cursor: pointer;
+    }
+    .play ul.menu  {
+      width: max-content;
+      margin: 10px;
+    }
+    .play ul.menu li {
+      font-size: 24px;
+      text-shadow: 2px 2px #000000;
+    }
+    .main {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .row {
+      width: auto;
+    }
+    .main .row .item {
+      text-align: center;
+    }
+    .fade-in {
+      animation: fadeIn ease 1s;
+      opacity: 1;
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity:0;
+      }
+      100% {
+        opacity:1;
+      }
+    }
+    .overlay-wrapper {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .overlay {
+      height: calc(100vh - 196px);
+      width: 700px;
+      background: rgba(255,255,255, 0.8);
+      overflow-x: auto;
+    }
+    .overlay img {
+      max-width: 500px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+
+    }
+    .overlay p {
+      padding: 10px;
+      font-size: 24px;
+      color: #000000;
+    }
+    .black {
+      background: #000000;
+    }
+</style>
+<script src="menu.js"></script> 
+<script src="sprite.js"></script> 
+</head>
+<body>
+  <div id="menu-wrapper" class="fade-in">
+    <pre id="menu"></pre>
+  </div>
+  <div id="sprite-wrapper" class="fade-in">
+    <pre id="sprite"></pre>
+  </div>
+</body>
+<script>
+  var menu = Elm.Menu.init({
+    node: document.getElementById('menu')
+  });
+  var sprite = Elm.Sprite.init({
+    node: document.getElementById('sprite')
+  });
+  menu.ports.togglePlayground.subscribe(function(menuItem) {
+    if ((menuItem === "History" || menuItem === "About")) {
+      setTimeout(function() {
+        var scrol = document.getElementById("scroll");
+        if (scrol) scrol.scrollTop = 0;
+      }, 50);
+    }
+    if (menuItem === "Playground") {
+      sprite.ports.isPaused.send(false);
+    } else {
+      sprite.ports.isPaused.send(true);
+    }
+  });
+</script>
+</html>
